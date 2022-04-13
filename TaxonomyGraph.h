@@ -41,11 +41,6 @@ vector<pair<string,string>> findSiblings(string commonName);
 
 //getters
 pair<string,string> getParentName(string name);
-//print functions
-//prints ancestorGraph, nameToID, and idToName
-void print();
-void printCommonAncestorPath(string commonName1, string commonName2);
-void printSpeciesAncestorTree(string speciesName);
 };
 
-void TaxonomyGraphDriver(TaxonomyGraph& g, string filename1, string filename2);
+

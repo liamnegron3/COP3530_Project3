@@ -9,6 +9,55 @@
 #include "TaxonomyGraph.h"
 using namespace std;
 
+//Quick Sort Helper
+template<typename T>
+int partition(vector<T>& arr, int low, int high)
+{
+    //pivot is first element
+    T pivot = arr[low];
+    int up = low;
+    int down = high;
+
+    while(up < down)
+    {
+        for(int i = 0; i < high; i++)
+        {
+            if(arr[up] > pivot)
+                break;
+            up++;
+        }
+        for(int i = high; i > low; i--)
+        {
+            if(arr[down] < pivot)
+                break;
+            down--;
+        }
+        //swap
+        if(up < down)
+        {
+            T temp = arr[up];
+            arr[up] = arr[down];
+            arr[down] = temp;
+        }
+    }
+    //swap pivot with down
+    T temp = arr[low];
+    arr[low] = arr[down];
+    arr[down] = temp;
+    return down;
+}
+
+template<typename T>
+void quickSort(vector<T>& arr, int low, int high)
+{
+    if (low < high)
+    {
+        int pivot = partition(arr,low,high);
+        quickSort(arr,low,pivot-1);
+        quickSort(arr,pivot+1, high);
+    }
+}
+
 void TaxonomyGraph::ReadTaxonomyIDs(string filename)
 {
   ifstream file(filename);
@@ -226,53 +275,6 @@ vector<pair<string,string>> TaxonomyGraph::SpeciesAncestorTree(string speciesNam
   return {};
 }
 
-template<typename T>
-int partition(vector<T>& arr, int low, int high)
-{
-    //pivot is first element
-    T pivot = arr[low];
-    int up = low;
-    int down = high;
-
-    while(up < down)
-    {
-        for(int i = 0; i < high; i++)
-        {
-            if(arr[up] > pivot)
-                break;
-            up++;
-        }
-        for(int i = high; i > low; i--)
-        {
-            if(arr[down] < pivot)
-                break;
-            down--;
-        }
-        //swap
-        if(up < down)
-        {
-            T temp = arr[up];
-            arr[up] = arr[down];
-            arr[down] = temp;
-        }
-    }
-    //swap pivot with down
-    T temp = arr[low];
-    arr[low] = arr[down];
-    arr[down] = temp;
-    return down;
-}
-
-template<typename T>
-void quickSort(vector<T>& arr, int low, int high)
-{
-    if (low < high)
-    {
-        int pivot = partition(arr,low,high);
-        quickSort(arr,low,pivot-1);
-        quickSort(arr,pivot+1, high);
-    }
-}
 vector<pair<string,string>> TaxonomyGraph::findSiblings(string commonName)
 {
    string childID = nameToID[commonName].second;
@@ -312,62 +314,6 @@ pair<string,string> TaxonomyGraph::getParentName(string name)
    return idToName[parentID];
 }
 
-void TaxonomyGraph::printCommonAncestorPath(string commonName1, string commonName2)
-{
-  vector<pair<string,string>> ancestorPath = CommonAncestorPath(commonName1, commonName2);
-  for(unsigned int i = 0; i < ancestorPath.size(); i++)
-  {
-    if(i == ancestorPath.size() - 1)
-      cout << "<" << ancestorPath[i].first << ", " << ancestorPath[i].second << ">" << endl;
-    else
-      cout << "<" << ancestorPath[i].first << ", " << ancestorPath[i].second << ">" << " => " << endl;
-  }
-}
-
-void TaxonomyGraph::printSpeciesAncestorTree(string speciesName)
-{
-  vector<pair<string,string>> ancestorTree = SpeciesAncestorTree(speciesName);
-  for(unsigned int i = 0; i < ancestorTree.size(); i++)
-  {
-    if(i == ancestorTree.size() - 1)
-      cout << "<" << ancestorTree[i].first << ", " << ancestorTree[i].second << ">" << endl;
-    else
-      cout << "<" << ancestorTree[i].first << ", " << ancestorTree[i].second << ">" << " => " << endl;
-  }
-}
-
-void TaxonomyGraph::print()
-{
-  cout << "ancestorGraph: " << endl;
-
-  for (auto member: ancestorGraph)
-  {
-    cout << member.first << " ";
-    for(unsigned int i = 0; i < member.second.size(); i++)
-    {
-      cout << member.second[i] << " ";
-    }
-    cout << endl;
-  }
-  cout << endl << "idToName: " << endl;
-  for(auto member: idToName)
-  {
-   cout << member.first << " <" << member.second.first << ", " << member.second.second << ">" << endl;
-  }
-
-   cout << endl << "nameToID: " << endl;
-  for(auto member: nameToID)
-  {
-    cout << member.first << " <" << member.second.first << ", " << member.second.second << ">" << endl;
-  }
-}
-
-void TaxonomyGraphDriver(TaxonomyGraph& g, string filename1, string filename2)
-{
-    g.ReadTaxonomyIDs(filename1);
-    g.ReadCommonNames(filename2);
-    g.printSpeciesAncestorTree("Camel");
-}
 
 bool TaxonomyGraph::NameExists(string commonName)
 {
