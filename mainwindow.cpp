@@ -56,7 +56,7 @@ void MainWindow::on_pushButton_clicked()
                 QString message = QString("Unable to display more than 1000 Species in shortest path between species.\n\nDo you want to find the common ancestor instead?");
 
                 QMessageBox::StandardButton reply;
-                reply = QMessageBox::warning(this,"",message,QMessageBox::Yes | QMessageBox::No);
+                reply = QMessageBox::warning(this,"Shortest Path Between Species",message,QMessageBox::Yes | QMessageBox::No);
 
                 if(reply == QMessageBox::Yes)
                 {
@@ -67,7 +67,6 @@ void MainWindow::on_pushButton_clicked()
 
                     QMessageBox::information(this,"Common Ancestor",message);
                 }
-
             }
             else
             {
@@ -124,7 +123,7 @@ void MainWindow::on_pushButton_clicked()
 
     if(ui->radioButton_4->isChecked())
     {
-
+        //Check if name exists
         if(speciesGraph.NameExists(commonName1.toStdString()) == false)
         {
             //Error Dialog
@@ -133,13 +132,65 @@ void MainWindow::on_pushButton_clicked()
         else
         {
             vector<pair<string,string>> siblings = speciesGraph.findSiblings(commonName1.toStdString());
+
+            //check sibling size to prevent the application from crashing
             if(siblings.size() == 0)
             {
                 QMessageBox::information(this,"Related Species","No Related Species");
             }
+            else if(siblings.size() > 5000)
+            {
+                QString message = QString("Unable to display more than 5000 related species.\n\nDo you want to display a reduced number instead?");
+
+                QMessageBox::StandardButton reply;
+                reply = QMessageBox::warning(this,"Related Species",message,QMessageBox::Yes | QMessageBox::No);
+
+                if(reply == QMessageBox::Yes)
+                {
+                    siblings.resize(5000);
+
+                    objDialog = new Dialog1(siblings,this);
+                    objDialog->show();
+                }
+
+            }
+            else if (siblings.size() > 1000)
+            {
+                QString message = QString("Unable to display more than 1000 related species graphically.\n\nDo you want to display a reduced number graphically?");
+
+                QMessageBox::StandardButton reply;
+                reply = QMessageBox::warning(this,"Related Species",message,QMessageBox::Yes | QMessageBox::No);
+
+                if(reply == QMessageBox::Yes)
+                {
+                    siblings.resize(1000);
+
+                    pair<string,string> parentSpecies = speciesGraph.getParentName(siblings[0].first);
+                    objGraphicDialog = new GraphicElementDialog(siblings,QString("Related Siblings"),parentSpecies,this);
+                    objGraphicDialog->show();
+
+                    objDialog = new Dialog1(siblings,this);
+                    objDialog->show();
+                }
+                if(reply == QMessageBox::No)
+                {
+                    QString message = QString("Do you want to display all related species in a text tree?");
+
+                    QMessageBox::StandardButton reply2;
+                    reply2 = QMessageBox::information(this,"Related Species",message,QMessageBox::Yes | QMessageBox::No);
+
+                    if(reply2 == QMessageBox::Yes)
+                    {
+                        objDialog = new Dialog1(siblings,this);
+                        objDialog->show();
+                    }
+                }
+            }
             else
             {
+
                 pair<string,string> parentSpecies = speciesGraph.getParentName(siblings[0].first);
+
                 objGraphicDialog = new GraphicElementDialog(siblings,QString("Related Siblings"),parentSpecies,this);
                 objGraphicDialog->show();
 
