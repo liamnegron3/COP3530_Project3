@@ -16,33 +16,6 @@ GraphicElementDialog::GraphicElementDialog(vector<pair<string,string>> &speciesN
         NodalAncestorPath(scene,speciesNames);
     else
         RelatedSpecies(scene,speciesNames);
-
-/*
-    node = new SpeciesNode(QString("Parent"),QString("Panthera onca"));
-    SpeciesNode *node2 = new SpeciesNode(QString("Child"),QString("Panthera onca"));
-
-    QLineF sceneLine = QLineF(40, 40, 80, 80);
-    //from Qt docs: https://doc.qt.io/qt-5/qtwidgets-graphicsview-diagramscene-example.html#arrow-class-definition
-    qreal arrowSize = 20;
-    double angle = std::atan2(-sceneLine.dy(), sceneLine.dx());
-    QPointF arrowP1 = sceneLine.p1() + QPointF(sin(angle + M_PI / 3) * arrowSize,
-                                           cos(angle + M_PI / 3) * arrowSize);
-    QPointF arrowP2 = sceneLine.p1() + QPointF(sin(angle + M_PI - M_PI / 3) * arrowSize,
-                                           cos(angle + M_PI - M_PI / 3) * arrowSize);
-    QPolygonF sceneArrowHead;
-    sceneArrowHead.clear();
-    sceneArrowHead << sceneLine.p1() << arrowP1 << arrowP2;
-
-    QGraphicsLineItem *line = scene->addLine(sceneLine);
-    QGraphicsPolygonItem *arrowHead = scene->addPolygon(sceneArrowHead);
-
-    scene->addItem(node);
-    scene->addItem(node2);
-
-    node->addEdge(line,arrowHead,false);
-    node2->addEdge(line,arrowHead,true);*/
-
-
 }
 
 void GraphicElementDialog::NodalAncestorPath(QGraphicsScene *scene,vector<pair<string,string>> &ancestorPath)

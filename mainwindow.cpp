@@ -88,8 +88,10 @@ void MainWindow::on_pushButton_clicked()
         {
             vector<pair<string,string>> ancestorTree = speciesGraph.SpeciesAncestorTree(commonName1.toStdString());
             objGraphicDialog = new GraphicElementDialog(ancestorTree,QString("Ancestor Tree"),ancestorTree[0],this);
-            //objDialog = new Dialog1(ancestorTree, this);
             objGraphicDialog->show();
+
+            objDialog = new Dialog1(ancestorTree, this);
+            objDialog->show();
         }
     }
 
