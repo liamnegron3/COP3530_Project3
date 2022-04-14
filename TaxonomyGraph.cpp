@@ -9,55 +9,6 @@
 #include "TaxonomyGraph.h"
 using namespace std;
 
-//Quick Sort Helper
-template<typename T>
-int partition(vector<T>& arr, int low, int high)
-{
-    //pivot is first element
-    T pivot = arr[low];
-    int up = low;
-    int down = high;
-
-    while(up < down)
-    {
-        for(int i = 0; i < high; i++)
-        {
-            if(arr[up] > pivot)
-                break;
-            up++;
-        }
-        for(int i = high; i > low; i--)
-        {
-            if(arr[down] < pivot)
-                break;
-            down--;
-        }
-        //swap
-        if(up < down)
-        {
-            T temp = arr[up];
-            arr[up] = arr[down];
-            arr[down] = temp;
-        }
-    }
-    //swap pivot with down
-    T temp = arr[low];
-    arr[low] = arr[down];
-    arr[down] = temp;
-    return down;
-}
-
-template<typename T>
-void quickSort(vector<T>& arr, int low, int high)
-{
-    if (low < high)
-    {
-        int pivot = partition(arr,low,high);
-        quickSort(arr,low,pivot-1);
-        quickSort(arr,pivot+1, high);
-    }
-}
-
 void TaxonomyGraph::ReadTaxonomyIDs(string filename)
 {
   ifstream file(filename);

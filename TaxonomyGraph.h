@@ -35,9 +35,57 @@ vector<pair<string,string>> CommonAncestorPath(string commonName1, string common
 pair<string,string> CommonAncestor(string commonName1, string commonName2);
 
 //Quick Sort Implementation
+//Quick Sort Helper
+template<typename T>
+int partition(vector<T>& arr, int low, int high)
+{
+    //pivot is first element
+    T pivot = arr[low];
+    int up = low;
+    int down = high;
+
+    while(up < down)
+    {
+        for(int i = 0; i < high; i++)
+        {
+            if(arr[up] > pivot)
+                break;
+            up++;
+        }
+        for(int i = high; i > low; i--)
+        {
+            if(arr[down] < pivot)
+                break;
+            down--;
+        }
+        //swap
+        if(up < down)
+        {
+            T temp = arr[up];
+            arr[up] = arr[down];
+            arr[down] = temp;
+        }
+    }
+    //swap pivot with down
+    T temp = arr[low];
+    arr[low] = arr[down];
+    arr[down] = temp;
+    return down;
+}
+
+template<typename T>
+void quickSort(vector<T>& arr, int low, int high)
+{
+    if (low < high)
+    {
+        int pivot = partition(arr,low,high);
+        quickSort(arr,low,pivot-1);
+        quickSort(arr,pivot+1, high);
+    }
+}
 
 // Merge Sort Implementation
-/*template<typename T>
+template<typename T>
 void merge(vector<T>& arr, int left, int mid, int right)
 {
     int n1 = mid - left + 1;
@@ -94,7 +142,7 @@ void mergeSort(vector<T>& arr, int left, int right)
         mergeSort(arr, mid + 1, right);
         merge(arr, left, mid, right);
     }
-}*/
+}
   
 //Find Closely Related Species sorted with quick sort
 vector<pair<string,string>> findSiblings(string commonName);
