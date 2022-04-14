@@ -36,6 +36,66 @@ pair<string,string> CommonAncestor(string commonName1, string commonName2);
 
 //Quick Sort Implementation
 
+// Merge Sort Implementation
+/*template<typename T>
+void merge(vector<T>& arr, int left, int mid, int right)
+{
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+    vector<T> X;
+    vector<T> Y;
+    for (int i = 0; i < n1; i++)
+    {
+        X.push_back(arr.at(left + i));
+    }
+    for (int j = 0; j < n2; j++)
+    {
+        Y.push_back(arr.at(mid + 1 + j));
+    }
+    int i, j, k;
+    i = 0;
+    j = 0;
+    k = left;
+    while (i < n1 && j < n2)
+    {
+        if (X.at(i) <= Y.at(j))
+        {
+            arr.at(k) = X.at(i);
+            i++;
+        }
+        else
+        {
+            arr.at(k) = Y.at(j);
+            j++;
+        }
+    k++;
+}
+    while (i < n1)
+    {
+        arr.at(k) = X.at(i);
+        i++;
+        k++;
+    }
+    while (j < n2)
+    {
+        arr.at(k) = Y.at(j);
+        j++;
+        k++;
+    }
+}
+
+template<typename T>
+void mergeSort(vector<T>& arr, int left, int right)
+{
+    if (left < right)
+    {
+        int mid = left + (right - left) / 2;
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid + 1, right);
+        merge(arr, left, mid, right);
+    }
+}*/
+  
 //Find Closely Related Species sorted with quick sort
 vector<pair<string,string>> findSiblings(string commonName);
 
