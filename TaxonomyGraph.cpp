@@ -289,7 +289,8 @@ vector<pair<string,string>> TaxonomyGraph::findSiblings(string commonName)
        else
        {
            string siblingCommonName = idToName[ancestorGraph[parentID][i]].first;
-           siblingsCommon.push_back(siblingCommonName);
+           if(siblingCommonName.size() > 0 && count(siblingsCommon.begin(),siblingsCommon.end(),siblingCommonName) == 0)
+               siblingsCommon.push_back(siblingCommonName);
        }
    }
 

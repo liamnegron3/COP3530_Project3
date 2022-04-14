@@ -189,7 +189,7 @@ void MainWindow::on_pushButton_clicked()
             else
             {
 
-                pair<string,string> parentSpecies = speciesGraph.getParentName(siblings[0].first);
+                pair<string,string> parentSpecies = speciesGraph.getParentName(commonName1.toStdString());
 
                 objGraphicDialog = new GraphicElementDialog(siblings,QString("Related Siblings"),parentSpecies,this);
                 objGraphicDialog->show();

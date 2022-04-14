@@ -131,7 +131,6 @@ void GraphicElementDialog::RelatedSpecies(QGraphicsScene *scene,vector<pair<stri
         child->addEdge(line,arrowHead,true);
         child->itemChange(QGraphicsItem::ItemPositionChange,QPointF(x+1,y+1));
     }
-
 }
 
 GraphicElementDialog::~GraphicElementDialog()
