@@ -27,28 +27,33 @@ void MainWindow::on_pushButton_clicked()
 {
 
     //get Names
-    commonName1 = ui->lineEdit->text();
-    commonName2 = ui->lineEdit_2->text();
+    QcommonName1 = ui->lineEdit->text();
+    QcommonName2 = ui->lineEdit_2->text();
+    commonName1 = QcommonName1.toStdString();
+    commonName2 = QcommonName2.toStdString();
 
+    //verifyNames
+    speciesGraph.verifyName(commonName1);
+    speciesGraph.verifyName(commonName2);
 
     //Shortest Path button is pressed
     if(ui->radioButton->isChecked())
     {
         //validate Names throw error if not found in database or misspelled
-        if(speciesGraph.NameExists(commonName1.toStdString()) == false || speciesGraph.NameExists(commonName2.toStdString()) == false)
+        if(speciesGraph.NameExists(commonName1) == false || speciesGraph.NameExists(commonName2) == false)
         {
             //Error Dialog
             QMessageBox::warning(this, tr("Error"),tr("Species Name Not Found."));
         }
         else
         {
-            vector<pair<string,string>> ancestorPath = speciesGraph.CommonAncestorPath(commonName1.toStdString(), commonName2.toStdString());
+            vector<pair<string,string>> ancestorPath = speciesGraph.CommonAncestorPath(commonName1, commonName2);
 
             //check if size limit is exceeded
             if(ancestorPath.size() > 1000)
             {
                 //find the common ancestor
-                pair<string,string> commonAncestorPair = speciesGraph.CommonAncestor(commonName1.toStdString(),commonName2.toStdString());
+                pair<string,string> commonAncestorPair = speciesGraph.CommonAncestor(commonName1,commonName2);
                 QString commonAncestorCommon = QString::fromStdString(commonAncestorPair.first);
                 QString commonAncestorScientific = QString::fromStdString(commonAncestorPair.second);
 
@@ -79,14 +84,15 @@ void MainWindow::on_pushButton_clicked()
     //Ancestor Path button is pressed
     if(ui->radioButton_2->isChecked())
     {
-        if(speciesGraph.NameExists(commonName1.toStdString()) == false)
+
+        if(speciesGraph.NameExists(commonName1) == false)
         {
             //Error Dialog
             QMessageBox::warning(this, tr("Error"),tr("Species Name Not Found."));
         }
         else
         {
-            vector<pair<string,string>> ancestorTree = speciesGraph.SpeciesAncestorTree(commonName1.toStdString());
+            vector<pair<string,string>> ancestorTree = speciesGraph.SpeciesAncestorTree(commonName1);
             objGraphicDialog = new GraphicElementDialog(ancestorTree,QString("Ancestor Tree"),ancestorTree[0],this);
             objGraphicDialog->show();
 
@@ -100,7 +106,7 @@ void MainWindow::on_pushButton_clicked()
     {
 
         //validate Names throw error if not found in database or misspelled
-        if(speciesGraph.NameExists(commonName1.toStdString()) == false || speciesGraph.NameExists(commonName2.toStdString()) == false)
+        if(speciesGraph.NameExists(commonName1) == false || speciesGraph.NameExists(commonName2) == false)
         {
             //Error Dialog
             QMessageBox::warning(this, tr("Error"),tr("Species Name Not Found."));
@@ -109,7 +115,7 @@ void MainWindow::on_pushButton_clicked()
         {
 
         //find the common ancestor
-        pair<string,string> commonAncestorPair = speciesGraph.CommonAncestor(commonName1.toStdString(),commonName2.toStdString());
+        pair<string,string> commonAncestorPair = speciesGraph.CommonAncestor(commonName1,commonName2);
         QString commonAncestorCommon = QString::fromStdString(commonAncestorPair.first);
         QString commonAncestorScientific = QString::fromStdString(commonAncestorPair.second);
         QString message;
@@ -126,14 +132,14 @@ void MainWindow::on_pushButton_clicked()
     if(ui->radioButton_4->isChecked())
     {
         //Check if name exists
-        if(speciesGraph.NameExists(commonName1.toStdString()) == false)
+        if(speciesGraph.NameExists(commonName1) == false)
         {
             //Error Dialog
             QMessageBox::warning(this, tr("Error"),tr("Species Name Not Found."));
         }
         else
         {
-            vector<pair<string,string>> siblings = speciesGraph.findSiblings(commonName1.toStdString());
+            vector<pair<string,string>> siblings = speciesGraph.findSiblings(commonName1);
 
             //check sibling size to prevent the application from crashing
             if(siblings.size() == 0)
@@ -191,7 +197,7 @@ void MainWindow::on_pushButton_clicked()
             else
             {
 
-                pair<string,string> parentSpecies = speciesGraph.getParentName(commonName1.toStdString());
+                pair<string,string> parentSpecies = speciesGraph.getParentName(commonName1);
 
                 objGraphicDialog = new GraphicElementDialog(siblings,QString("Related Siblings"),parentSpecies,this);
                 objGraphicDialog->show();

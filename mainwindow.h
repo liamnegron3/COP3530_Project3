@@ -28,8 +28,10 @@ private:
     Dialog1        *objDialog;
     GraphicElementDialog *objGraphicDialog;
     //store the names
-    QString commonName1;
-    QString commonName2;
+    QString QcommonName1;
+    QString QcommonName2;
+    string commonName1;
+    string commonName2;
 
 };
 #endif // MAINWINDOW_H

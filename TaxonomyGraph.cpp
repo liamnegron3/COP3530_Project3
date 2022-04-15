@@ -270,7 +270,57 @@ pair<string,string> TaxonomyGraph::getParentName(string name)
 bool TaxonomyGraph::NameExists(string commonName)
 {
   if(idToName[nameToID[commonName].second].first.size() > 0)
-    return true;
+      return true;
   else
     return false;
+}
+void TaxonomyGraph::verifyName(string& commonName)
+{
+    if(NameExists(commonName) == false)
+    {
+        //check lowercase
+        //make input all lowercase to match data
+        string lowercase = commonName;
+        for(unsigned int i = 0; i < commonName.size(); i++)
+            lowercase[i] = tolower(commonName[i]);
+
+        string uppercase = lowercase;
+        uppercase[0] = toupper(uppercase[0]); //make first letter uppercase
+
+        if(NameExists(lowercase))
+            commonName = lowercase;
+        else if(NameExists(uppercase))
+            commonName = uppercase;
+        else
+        {
+            //check for spaces
+            int spacePosition = 0;
+            bool found = false;
+            for(unsigned int i = 0; i < uppercase.size(); i++)
+            {
+                if(found)
+                {
+                    spacePosition = uppercase.find(' ', spacePosition + 1);
+                    if(uppercase.find(' ') != string::npos)
+                    {
+                        found = true;
+                        // uppercase[spacePosition + 1] = toupper(uppercase[spacePosition + 1]);
+                    }
+                    else
+                        found = false;
+                }
+                else
+                    spacePosition = uppercase.find(' ');
+
+                if(uppercase.find(' ') != string::npos)
+                {
+                    found = true;
+                    uppercase[spacePosition + 1] = toupper(uppercase[spacePosition + 1]);
+                }
+            }
+            commonName = uppercase;
+
+        }
+    }
+
 }

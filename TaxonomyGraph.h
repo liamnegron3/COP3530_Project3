@@ -23,6 +23,7 @@ void ReadTaxonomyIDs(string filename);
 void ReadCommonNames(string filename);
 
 //verification
+void verifyName(string& commonName);
 bool NameExists(string commonName);
 
 //algorithms
