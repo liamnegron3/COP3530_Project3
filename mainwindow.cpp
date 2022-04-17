@@ -75,7 +75,9 @@ void MainWindow::on_pushButton_clicked()
             }
             else
             {
+                QString title = QString("Shortest Ancestor Path Between ") + QcommonName1 + QString(" and ") + QcommonName2;
                 objDialog = new Dialog1(ancestorPath, this);
+                objDialog->setWindowTitle(title);
                 objDialog->show();
             }
             }
@@ -92,11 +94,15 @@ void MainWindow::on_pushButton_clicked()
         }
         else
         {
+            QString title = QcommonName1 + QString(" Ancestry Tree");
+
             vector<pair<string,string>> ancestorTree = speciesGraph.SpeciesAncestorTree(commonName1);
             objGraphicDialog = new GraphicElementDialog(ancestorTree,QString("Ancestor Tree"),ancestorTree[0],this);
+            objGraphicDialog->setWindowTitle(title);
             objGraphicDialog->show();
 
             objDialog = new Dialog1(ancestorTree, this);
+            objDialog->setWindowTitle(title);
             objDialog->show();
         }
     }
@@ -158,6 +164,8 @@ void MainWindow::on_pushButton_clicked()
                     siblings.resize(5000);
 
                     objDialog = new Dialog1(siblings,this);
+                    QString title = QcommonName1 + QString(" Siblings");
+                    objDialog->setWindowTitle(title);
                     objDialog->show();
                 }
 
@@ -172,12 +180,15 @@ void MainWindow::on_pushButton_clicked()
                 if(reply == QMessageBox::Yes)
                 {
                     siblings.resize(1000);
+                    QString title = QcommonName1 + QString(" Siblings");
 
                     pair<string,string> parentSpecies = speciesGraph.getParentName(siblings[0].first);
                     objGraphicDialog = new GraphicElementDialog(siblings,QString("Related Siblings"),parentSpecies,this);
+                    objGraphicDialog->setWindowTitle(title);
                     objGraphicDialog->show();
 
                     objDialog = new Dialog1(siblings,this);
+                    objDialog->setWindowTitle(title);
                     objDialog->show();
                 }
                 if(reply == QMessageBox::No)
@@ -190,6 +201,8 @@ void MainWindow::on_pushButton_clicked()
                     if(reply2 == QMessageBox::Yes)
                     {
                         objDialog = new Dialog1(siblings,this);
+                        QString title = QcommonName1 + QString(" Siblings");
+                        objDialog->setWindowTitle(title);
                         objDialog->show();
                     }
                 }
@@ -199,10 +212,14 @@ void MainWindow::on_pushButton_clicked()
 
                 pair<string,string> parentSpecies = speciesGraph.getParentName(commonName1);
 
+                QString title = QcommonName1 + QString(" Siblings");
+
                 objGraphicDialog = new GraphicElementDialog(siblings,QString("Related Siblings"),parentSpecies,this);
+                objGraphicDialog->setWindowTitle(title);
                 objGraphicDialog->show();
 
                 objDialog = new Dialog1(siblings,this);
+                objDialog->setWindowTitle(title);
                 objDialog->show();
 
             }

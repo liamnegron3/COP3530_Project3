@@ -66,7 +66,7 @@ void SpeciesNode::moveLineToCenter(QPointF newPosition,QGraphicsLineItem *line,Q
        }
        else
        {
-           child = QPointF(newPosition.x() + dx, newPosition.y() + boundingRect().y() + boundingRect().width());
+           child = QPointF(newPosition.x() + dx, newPosition.y() + boundingRect().y() + boundingRect().height());
            //if you want center position QPointF(newPosition.x() + dx, newPosition.y() + dy);
        }
 
@@ -99,7 +99,7 @@ void SpeciesNode::moveLineToCenter(QPointF newPosition,QGraphicsLineItem *line,Q
 
 QRectF SpeciesNode::boundingRect() const
 {
-    return QRectF (0,0,100,100);
+    return QRectF (0,0,175,100);
 }
 
 void SpeciesNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
