@@ -144,6 +144,9 @@ void mergeSort(vector<T>& arr, int left, int right)
         merge(arr, left, mid, right);
     }
 }
+
+//Find Recommended Species sorted with merge sort
+vector<pair<string,string>> findRecommended(string className, string commonName);
   
 //Find Closely Related Species sorted with quick sort
 vector<pair<string,string>> findSiblings(string commonName);
