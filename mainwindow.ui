@@ -77,6 +77,16 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QRadioButton" name="radioButton_5">
+        <property name="text">
+         <string>Recommended Species</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox"/>
+      </item>
      </layout>
     </item>
     <item row="6" column="0">

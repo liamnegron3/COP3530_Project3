@@ -10,6 +10,13 @@ MainWindow::MainWindow(QWidget *parent)
     QString windowTitle("Taxon Search");
     ui->setupUi(this);
 
+    //combo box
+    ui->comboBox->addItem("Mammalia (Mammals)");
+    ui->comboBox->addItem("Aves (Birds)");
+    ui->comboBox->addItem("Reptilia (Reptiles)");
+    ui->comboBox->addItem("Amphibia (Amphibians)");
+
+
     this->setWindowTitle(windowTitle);
 
     //get data into graph
@@ -224,6 +231,29 @@ void MainWindow::on_pushButton_clicked()
 
             }
         }
+    }
+
+    if(ui->radioButton_5->isChecked())
+    {
+        if(ui->comboBox->currentText() == "Mammalia (Mammals)")
+        {
+            //top 10 mammals
+            qDebug() << "Mammals";
+        }
+
+        else if(ui->comboBox->currentText() == "Aves (Birds)")
+        {
+            qDebug() << "Birds";
+        }
+        else if(ui->comboBox->currentText() == "Reptilia (Reptiles)")
+        {
+            qDebug() << "Reptiles";
+        }
+        else
+        {
+            qDebug() << "Amphibians";
+        }
+
     }
 }
 
