@@ -226,6 +226,56 @@ vector<pair<string,string>> TaxonomyGraph::SpeciesAncestorTree(string speciesNam
   return {};
 }
 
+vector<pair<string,string>> TaxonomyGraph::findRecommended(string className, string commonName)
+{
+    string orgID = "";
+    if (className == "Mammalia")
+    {
+        orgID = "6224G";
+    }
+    else if (className == "Aves")
+    {
+        orgID = "V2";
+    }
+    else if (className == "Reptilia")
+    {
+        orgID = "RP";
+    }
+    else if (className == "Amphibia")
+    {
+        orgID = "PH";
+    }
+    vector<string> recommendedSpecies;
+    for(unsigned int i = 0; i < ancestorGraph[orgID].size(); i++)
+    {
+        if (commonName.at(0) == (idToName[ancestorGraph[parentID][i]].first).at(0))
+        {
+            string recommendedName = idToName[ancestorGraph[parentID][i]].first;
+            recommendedSpecies.push_back(recommendedName);
+        }
+        else 
+        {
+            continue;
+        }
+        if (recommendedSpecies.size() == 10)
+        {
+            break;
+        }
+    }
+    //sort 10 names
+    mergeSort(recommendedSpecies,0,recommendedSpecies.size()-1);
+  
+    //recombine with scientific names
+    vector<pair<string,string>> recommendations;
+    for(unsigned int i = 0; i < recommendedSpecies.size(); i++)
+    {
+        string scientficName = nameToID[recommendedSpecies[i]].first;
+        recommendations.push_back(make_pair(recommendedSpecies[i],scientficName));
+    }
+
+    return recommendations;
+}
+
 vector<pair<string,string>> TaxonomyGraph::findSiblings(string commonName)
 {
    string childID = nameToID[commonName].second;
