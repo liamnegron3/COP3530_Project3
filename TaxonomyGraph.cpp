@@ -150,6 +150,7 @@ vector<pair<string,string>> TaxonomyGraph::CommonAncestorPath(string commonName1
   //push first element to the queue
   q.push(nameToID[commonName1].second);
 
+  //begin BFS stop when commonName2 is reached
   while(!q.empty())
   {
     string parentID = q.front();
@@ -232,22 +233,6 @@ vector<pair<string,string>> TaxonomyGraph::findRecommended(string commonName1,st
     vector<pair<string,string>> path = CommonAncestorPath(commonName1,commonName2);
 
     vector<string> recommendedSpecies;
-    //
-    //split path into tenths
-    /*
-    int increment = path.size()/10 - 1;
-    int num = 1;
-
-
-    for(unsigned int i = 0; i < 10; i++)
-    {
-        recommendedSpecies.push_back(path[num].first);
-        num += increment;
-        if (recommendedSpecies.size() == 10)
-        {
-            break;
-        }
-    }*/
 
     for(unsigned int i = 0; i < path.size(); i++)
     {
@@ -257,12 +242,14 @@ vector<pair<string,string>> TaxonomyGraph::findRecommended(string commonName1,st
         recommendedSpecies.push_back(path[i].first);
     }
 
-    //sort  names
+    //sort names in alphabetical order
     if(sort == "Quick")
         quickSort<string>(recommendedSpecies,0,recommendedSpecies.size()-1);
     else
         mergeSort<string>(recommendedSpecies,0,recommendedSpecies.size()-1);
 
+    //remove the non-species names i.e get rid of entries
+    //with only scientific names
     vector<string> sortedRecommendedSpecies;
     string previous = recommendedSpecies[0];
     for(unsigned int i = 0; i < recommendedSpecies.size(); i++)
@@ -275,6 +262,7 @@ vector<pair<string,string>> TaxonomyGraph::findRecommended(string commonName1,st
         }
     }
 
+    //reduce vector to 10 to make it more presentable
     vector<string> topTenRecommendedSpecies;
     if(sortedRecommendedSpecies.size() > 10)
     {
