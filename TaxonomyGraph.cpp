@@ -226,37 +226,22 @@ vector<pair<string,string>> TaxonomyGraph::SpeciesAncestorTree(string speciesNam
   return {};
 }
 
-vector<pair<string,string>> TaxonomyGraph::findRecommended(string className, string commonName)
+vector<pair<string,string>> TaxonomyGraph::findRecommended(string commonName1,string commonName2)
 {
-    string orgID = "";
-    if (className == "Mammalia")
-    {
-        orgID = "6224G";
-    }
-    else if (className == "Aves")
-    {
-        orgID = "V2";
-    }
-    else if (className == "Reptilia")
-    {
-        orgID = "RP";
-    }
-    else if (className == "Amphibia")
-    {
-        orgID = "PH";
-    }
+
+    vector<pair<string,string>> path = CommonAncestorPath(commonName1,commonName2);
+
     vector<string> recommendedSpecies;
-    for(unsigned int i = 0; i < ancestorGraph[orgID].size(); i++)
+
+    //split path into tenths
+    int increment = path.size()/10 - 1;
+    int num = 1;
+
+
+    for(unsigned int i = 0; i < 10; i++)
     {
-        if (commonName.at(0) == (idToName[ancestorGraph[parentID][i]].first).at(0))
-        {
-            string recommendedName = idToName[ancestorGraph[parentID][i]].first;
-            recommendedSpecies.push_back(recommendedName);
-        }
-        else 
-        {
-            continue;
-        }
+        recommendedSpecies.push_back(path[num].first);
+        num += increment;
         if (recommendedSpecies.size() == 10)
         {
             break;

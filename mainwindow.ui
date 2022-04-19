@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>321</width>
-    <height>270</height>
+    <height>303</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -73,7 +73,7 @@
       <item>
        <widget class="QRadioButton" name="radioButton_4">
         <property name="text">
-         <string>Related Species</string>
+         <string>Find Siblings</string>
         </property>
        </widget>
       </item>
@@ -83,9 +83,6 @@
          <string>Recommended Species</string>
         </property>
        </widget>
-      </item>
-      <item>
-       <widget class="QComboBox" name="comboBox"/>
       </item>
      </layout>
     </item>
