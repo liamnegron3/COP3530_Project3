@@ -84,6 +84,9 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QComboBox" name="comboBox"/>
+      </item>
      </layout>
     </item>
     <item row="6" column="0">

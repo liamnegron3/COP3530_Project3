@@ -226,7 +226,7 @@ vector<pair<string,string>> TaxonomyGraph::SpeciesAncestorTree(string speciesNam
   return {};
 }
 
-vector<pair<string,string>> TaxonomyGraph::findRecommended(string commonName1,string commonName2)
+vector<pair<string,string>> TaxonomyGraph::findRecommended(string commonName1,string commonName2,string sort)
 {
 
     vector<pair<string,string>> path = CommonAncestorPath(commonName1,commonName2);
@@ -234,6 +234,7 @@ vector<pair<string,string>> TaxonomyGraph::findRecommended(string commonName1,st
     vector<string> recommendedSpecies;
 
     //split path into tenths
+    /*
     int increment = path.size()/10 - 1;
     int num = 1;
 
@@ -246,22 +247,70 @@ vector<pair<string,string>> TaxonomyGraph::findRecommended(string commonName1,st
         {
             break;
         }
+    }*/
+
+    for(unsigned int i = 0; i < path.size(); i++)
+    {
+        if(path[i].first != "")
+            path[i].first.at(0) = toupper(path[i].first.at(0));
+
+        recommendedSpecies.push_back(path[i].first);
     }
-    //sort 10 names
-    mergeSort(recommendedSpecies,0,recommendedSpecies.size()-1);
+
+    //sort  names
+    if(sort == "Quick")
+        quickSort<string>(recommendedSpecies,0,recommendedSpecies.size()-1);
+    else
+        mergeSort<string>(recommendedSpecies,0,recommendedSpecies.size()-1);
+
+    vector<string> sortedRecommendedSpecies;
+    string previous = recommendedSpecies[0];
+    for(unsigned int i = 0; i < recommendedSpecies.size(); i++)
+    {
+
+        if(recommendedSpecies[i] != "" && recommendedSpecies[i] != previous )
+        {
+            sortedRecommendedSpecies.push_back(recommendedSpecies[i]);
+            previous = recommendedSpecies[i];
+        }
+    }
+
+    vector<string> topTenRecommendedSpecies;
+    if(sortedRecommendedSpecies.size() > 10)
+    {
+        int increment = sortedRecommendedSpecies.size()/10 - 1;
+        int num = 1;
+
+
+        for(unsigned int i = 0; i < 10; i++)
+        {
+            topTenRecommendedSpecies.push_back(sortedRecommendedSpecies[num]);
+            num += increment;
+            if (topTenRecommendedSpecies.size() == 10)
+            {
+                break;
+            }
+        }
+    }
+    else
+    {
+        for(unsigned int i = 0; i < sortedRecommendedSpecies.size(); i++)
+            topTenRecommendedSpecies.push_back(sortedRecommendedSpecies[i]);
+    }
+
   
     //recombine with scientific names
     vector<pair<string,string>> recommendations;
-    for(unsigned int i = 0; i < recommendedSpecies.size(); i++)
+    for(unsigned int i = 0; i < topTenRecommendedSpecies.size(); i++)
     {
-        string scientficName = nameToID[recommendedSpecies[i]].first;
-        recommendations.push_back(make_pair(recommendedSpecies[i],scientficName));
+        string scientficName = nameToID[topTenRecommendedSpecies[i]].first;
+        recommendations.push_back(make_pair(topTenRecommendedSpecies[i],scientficName));
     }
 
     return recommendations;
 }
 
-vector<pair<string,string>> TaxonomyGraph::findSiblings(string commonName)
+vector<pair<string,string>> TaxonomyGraph::findSiblings(string commonName, string Sort)
 {
    string childID = nameToID[commonName].second;
    string parentID = childToParentID[childID];
@@ -281,7 +330,10 @@ vector<pair<string,string>> TaxonomyGraph::findSiblings(string commonName)
    }
 
    //do quick sort here
-   quickSort<string>(siblingsCommon,0,siblingsCommon.size()-1);
+   if(Sort == "Quick")
+    quickSort<string>(siblingsCommon,0,siblingsCommon.size()-1);
+   else
+    mergeSort<string>(siblingsCommon,0,siblingsCommon.size()-1);
 
    //recombine with scientific names
    vector<pair<string,string>> siblings;
@@ -293,6 +345,8 @@ vector<pair<string,string>> TaxonomyGraph::findSiblings(string commonName)
 
    return siblings;
 }
+
+
 
 pair<string,string> TaxonomyGraph::getParentName(string name)
 {

@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include <dialog.h>
+#include <chrono>
+#include <sstream>
 #include <graphicelementdialog.h>
 #include <TaxonomyGraph.h>
 

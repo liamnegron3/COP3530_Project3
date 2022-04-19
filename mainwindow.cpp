@@ -10,7 +10,11 @@ MainWindow::MainWindow(QWidget *parent)
     QString windowTitle("Taxon Search");
     ui->setupUi(this);
 
-   this->setWindowTitle(windowTitle);
+    this->setWindowTitle(windowTitle);
+
+    //combo box for search algorithm selection
+    ui->comboBox->addItem("Quick Sort");
+    ui->comboBox->addItem("Merge Sort");
 
     //get data into graph
     speciesGraph.ReadTaxonomyIDs("C:/Users/Liam/Documents/School/Class/Year 2/Spring 2022/COP 3530/Projects/Project3/Data1/NameUsage.tsv");
@@ -145,8 +149,24 @@ void MainWindow::on_pushButton_clicked()
         }
         else
         {
-            vector<pair<string,string>> siblings = speciesGraph.findSiblings(commonName1);
+             string sort = "";
+            if(ui->comboBox->currentText() == "Quick Sort")
+                sort = "Quick";
+            else if(ui->comboBox->currentText() == "Merge Sort")
+                sort = "Merge";
 
+            auto start = chrono::high_resolution_clock::now();
+            vector<pair<string,string>> siblings = speciesGraph.findSiblings(commonName1,sort);
+            auto stop = chrono::high_resolution_clock::now();
+
+            auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+
+            string tempTime = to_string(duration.count());
+            QString time = tempTime.c_str() + QString(" us");
+            QString sortTitle = sort.c_str() + QString(" Sort Time");
+
+
+            QMessageBox::information(this,sortTitle, time);
             //check sibling size to prevent the application from crashing
             if(siblings.size() == 0)
             {
@@ -228,8 +248,26 @@ void MainWindow::on_pushButton_clicked()
 
     if(ui->radioButton_5->isChecked())
     {
+
+        string sort = "";
+       if(ui->comboBox->currentText() == "Quick Sort")
+           sort = "Quick";
+       else if(ui->comboBox->currentText() == "Merge Sort")
+           sort = "Merge";
+
+       auto start = chrono::high_resolution_clock::now();
+       vector<pair<string,string>> recommendedSpecies = speciesGraph.findRecommended(commonName1,commonName2,sort);
+       auto stop = chrono::high_resolution_clock::now();
+
+       auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
+
+       string tempTime = to_string(duration.count());
+       QString time = tempTime.c_str() + QString(" ms");
+       QString sortTitle = sort.c_str() + QString(" Sort Time");
+
+       QMessageBox::information(this,sortTitle, time);
+
         QString title = QString("Top 10 Recommended Species");
-        vector<pair<string,string>> recommendedSpecies = speciesGraph.findRecommended(commonName1,commonName2);
         objDialog = new Dialog1(recommendedSpecies,this);
         objDialog->setWindowTitle(title);
         objDialog->show();

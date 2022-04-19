@@ -49,9 +49,13 @@ int partition(vector<T>& arr, int low, int high)
     {
         for(int i = 0; i < high; i++)
         {
-            if(arr[up] > pivot)
-                break;
-            up++;
+            //extra if to prevent seg faults
+            if(up< arr.size() -1)
+            {
+                if(arr[up] > pivot)
+                    break;
+                up++;
+            }
         }
         for(int i = high; i > low; i--)
         {
@@ -145,11 +149,11 @@ void mergeSort(vector<T>& arr, int left, int right)
     }
 }
 
-//Find Recommended Species sorted with merge sort
-vector<pair<string,string>> findRecommended(string commonName1, string commonName2);
+//Find Recommended Species sorted with quick or merge sort
+vector<pair<string,string>> findRecommended(string commonName1, string commonName2, string Sort);
   
-//Find Closely Related Species sorted with quick sort
-vector<pair<string,string>> findSiblings(string commonName);
+//Find Closely Related Species sorted with quick or merge sort
+vector<pair<string,string>> findSiblings(string commonName,string Sort);
 
 //getters
 pair<string,string> getParentName(string name);
